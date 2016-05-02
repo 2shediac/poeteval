@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
 
-$usage = 'Usage: poeteval [-h |--help]
+$usage = 'Usage: PHP poeteval.php  [-h |--help]
                [--folder= path to folder]
                [--moodle= Specify the Moodle version. Supported versions 27, 28, 29, 30]
                [--php= Specify the PHP version. Supported versions 5.4, 5.5, 5.6, 7.0 
@@ -52,7 +52,7 @@ $folder = $op['folder'];
 
 /* check for Moodle version */
 if (!isset($op['moodle'])) {
-    echo 'No moodle version specified '.PHP_EOL;
+    echo 'No moodle version12 specified '.PHP_EOL;
     exit(1);
 }
 
@@ -146,8 +146,9 @@ if ($moodle == '30') {
        exit(1);
    } else {
       $foundcomponent = 0;
-      while (!feof($versionfile)) {
-         $ln = fgets($versionfile);
+      $file = fopen($folder.'/version.php','r');
+      while (!feof($file)) {
+         $ln = fgets($file);
          if (stripos($ln,'plugin->component')) {
            /* check for a valid component */
            $foundcomponent =1;
