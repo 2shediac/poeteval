@@ -52,7 +52,7 @@ $folder = $op['folder'];
 
 /* check for Moodle version */
 if (!isset($op['moodle'])) {
-    echo 'No moodle version12 specified '.PHP_EOL;
+    echo 'No moodle version specified '.PHP_EOL;
     exit(1);
 }
 
@@ -146,7 +146,7 @@ if ($moodle == '30') {
        exit(1);
    } else {
       $foundcomponent = 0;
-      $file = fopen($folder.'/version.php','r');
+      $file = fopen($folder.'/version.php', 'r');
       while (!feof($file)) {
          $ln = fgets($file);
          if (stripos($ln,'plugin->component')) {
@@ -210,10 +210,9 @@ if ($moodle == '30') {
                  echo 'Plugin type '.$plugintype.' is unsupported.'.PHP_EOL;
                  exit(1);
               }
-              
            }
-         } 
-       } 
+         }
+       }
     }
     if ($foundcomponent === 0) {
         echo 'Component line not found in version.php. This is required for Moodle 3.x.'.PHP_EOL;
@@ -224,11 +223,11 @@ if ($moodle == '30') {
 $ymlfile = 'language: php
 sudo: false
 cache:
-directories: 
+directories:
 - $HOME/.composer/cache
 
 php:
-  - '.$phpversion.' 
+  - '.$phpversion.'
 
 env:
  global:
@@ -266,10 +265,10 @@ if (is_dir($unitfolder)) {
      if ($filecount > 0) {
           $ymlfile .= '
   - moodle-plugin-ci phpunit';
-     }   
-     
+     }
+
      /* see if there are any behat tests */
-     
+
      $behatfolder = $folder .'/tests/behat/';
      if (is_dir($behatfolder)) {
          $filecount = 0;
@@ -278,7 +277,7 @@ if (is_dir($unitfolder)) {
              $ymlfile .= '
   - moodle-plugin-ci behat';
          }
-     } 
+     }
 }
 
 

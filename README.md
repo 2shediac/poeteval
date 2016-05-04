@@ -1,3 +1,10 @@
+About
+-----
+
+POETEVAL is a simple PHP program designed to to parse a Moodle plugin to create the travis.yml file
+@author    Derek Henderson <derek.henderson@remote-learner.net>
+@copyright 2016 Remote-Learner, Inc.
+
 # Introduction
 
 This project is a simple PHP program designed to parse a Moodle plugin and create the travis.yml for submission to travis.ci.
