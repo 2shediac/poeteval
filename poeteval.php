@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
 
-$usage = 'Usage: PHP poeteval.php  [-h |--help]
+$usage = 'Usage: poeteval [-h |--help]
                [--folder= path to folder]
                [--moodle= Specify the Moodle version. Supported versions 27, 28, 29, 30]
                [--php= Specify the PHP version. Supported versions 5.4, 5.5, 5.6, 7.0 
@@ -84,19 +84,28 @@ if (!in_array($phpversion, $supportedphpversions)) {
     exit(1);
 }
 
-if ($moodle == '2.9' && $phpversion=='5.4.'){
-    echo 'Invalid phpversion specified Moodle 2.9 requires at least php version 5.5.'.PHP_EOL;
-    exit(1);
+if (($moodle == '29') || ($moodle =='28')) {
+    $validversions = array(
+                      '5.4',
+                      '5.5',
+                      '5.6',
+                      );
+    if (!in_array($phpversion,$validversions)) {
+        echo 'Invalid phpversion specified Moodle '.$moodle.' supports versions 5.4, 5.5,and 5.6.'.PHP_EOL;
+        exit(1);
+    }
 }
 
-if ($moodle == '3.0' && $phpversion == '5.4') {
-    echo 'Invalid phpversion specified Moodle 3.0 requires at least php version 5.5'.PHP_EOL;
-    exit(1);
-}
-
-if ($phpversion == '7.0' && !$moodle == '30') {
-    echo 'Invalid phpversion specified. Only Moodle 3.0 supports phpversion 7.0.'.PHP_EOL;
-    exit(1);
+if ($moodle == '30') {
+    $validversions = array(
+                      '5.5',
+                      '5.6',
+                      '7.0',
+                      );
+    if (!in_array($phpversion,$validversions)) {
+       echo 'Invalid phpversion specified Moodle 3.0 supports versions 5.5, 5.6, and 7.0.'.PHP_EOL;
+       exit(1);
+    }
 }
 
 if (!isset($op['db'])) {
@@ -145,10 +154,10 @@ if ($moodle == '30') {
        echo ' The version.php cannot be opended. '.PHP_EOL;
        exit(1);
    } else {
+      $vfile=fopen($folder.'/version.php','r');
       $foundcomponent = 0;
-      $file = fopen($folder.'/version.php', 'r');
-      while (!feof($file)) {
-         $ln = fgets($file);
+      while (!feof($vfile)) {
+         $ln = fgets($vfile);
          if (stripos($ln,'plugin->component')) {
            /* check for a valid component */
            $foundcomponent =1;
@@ -210,10 +219,12 @@ if ($moodle == '30') {
                  echo 'Plugin type '.$plugintype.' is unsupported.'.PHP_EOL;
                  exit(1);
               }
+              
            }
-         }
-       }
+         } 
+       } 
     }
+    fclose($vfile);
     if ($foundcomponent === 0) {
         echo 'Component line not found in version.php. This is required for Moodle 3.x.'.PHP_EOL;
         exit(1);
@@ -223,11 +234,11 @@ if ($moodle == '30') {
 $ymlfile = 'language: php
 sudo: false
 cache:
-directories:
+directories: 
 - $HOME/.composer/cache
 
 php:
-  - '.$phpversion.'
+  - '.$phpversion.' 
 
 env:
  global:
@@ -265,10 +276,10 @@ if (is_dir($unitfolder)) {
      if ($filecount > 0) {
           $ymlfile .= '
   - moodle-plugin-ci phpunit';
-     }
-
+     }   
+     
      /* see if there are any behat tests */
-
+     
      $behatfolder = $folder .'/tests/behat/';
      if (is_dir($behatfolder)) {
          $filecount = 0;
@@ -277,7 +288,7 @@ if (is_dir($unitfolder)) {
              $ymlfile .= '
   - moodle-plugin-ci behat';
          }
-     }
+     } 
 }
 
 
