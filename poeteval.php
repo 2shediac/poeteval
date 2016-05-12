@@ -10,9 +10,9 @@
 $usage = 'Usage: poeteval [-h |--help]
                [--folder= path to folder]
                [--moodle= Specify the Moodle version. Supported versions 27, 28, 29, 30]
-               [--php= Specify the PHP version. Supported versions 5.4, 5.5, 5.6, 7.0 
+               [--php= Specify the PHP version. Supported versions 5.4, 5.5, 5.6, 7.0
                [--db= Specify the database mysqli - (default) | pgsqli ]'.PHP_EOL;
-    
+
 if ($argc < 2) {
     echo $usage;
     exit(1);
@@ -134,14 +134,14 @@ if (file_exists($fileyml)) {
 if (!is_dir($folder)){
     echo 'The folder '.$folder .' does not exist.'.PHP_EOL;
     exit(1);
-    
+
 }
 
 /* see if folder is writeable */
 if ( !is_writable($folder)){
     echo 'The folder '.$folder .' is not writable.'.PHP_EOL;
     exit(1);
-}    
+}
 
 /* for M3.0 check version file */
 if ($moodle == '30') {
@@ -149,7 +149,7 @@ if ($moodle == '30') {
    if (!file_exists($versionfile)) {
        echo 'The version.php file does not exist. For a Moodle 3.x plugin this must be present.'.PHP_EOL;
        exit(1);
-   } 
+   }
    if (!fopen($folder.'/version.php','r')) {
        echo ' The version.php cannot be opended. '.PHP_EOL;
        exit(1);
@@ -219,10 +219,9 @@ if ($moodle == '30') {
                  echo 'Plugin type '.$plugintype.' is unsupported.'.PHP_EOL;
                  exit(1);
               }
-              
            }
-         } 
-       } 
+         }
+       }
     }
     fclose($vfile);
     if ($foundcomponent === 0) {
@@ -238,7 +237,7 @@ directories:
 - $HOME/.composer/cache
 
 php:
-  - '.$phpversion.' 
+  - '.$phpversion.'
 
 env:
  global:
@@ -276,10 +275,9 @@ if (is_dir($unitfolder)) {
      if ($filecount > 0) {
           $ymlfile .= '
   - moodle-plugin-ci phpunit';
-     }   
-     
+     }
      /* see if there are any behat tests */
-     
+
      $behatfolder = $folder .'/tests/behat/';
      if (is_dir($behatfolder)) {
          $filecount = 0;
@@ -288,9 +286,8 @@ if (is_dir($unitfolder)) {
              $ymlfile .= '
   - moodle-plugin-ci behat';
          }
-     } 
+     }
 }
-
 
    if (file_put_contents($fileyml, $ymlfile)){
        echo 'yml file written.'.PHP_EOL;
